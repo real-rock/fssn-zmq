@@ -79,8 +79,12 @@ func userMangerNameserver(wg *sync.WaitGroup, localIpAddr, portSubscribe string)
 		user := strings.Split(string(userReq[0]), ":")
 		userDb = append(userDb, user)
 		fmt.Printf("user registration '%s' from '%s'.\n", user[1], user[0])
-		if err := req.SendFrame([]byte("ok"), 0); err != nil {
-			log.Fatalf("[ERROR] Failed to send 'ok': %v", err)
+		for {
+			if err := req.SendFrame([]byte("ok"), 0); err != nil {
+				log.Printf("[ERROR] Failed to send 'ok': %v", err)
+			} else {
+				break
+			}
 		}
 	}
 }
@@ -98,11 +102,15 @@ func relayServerNameserver(wg *sync.WaitGroup, localIpAddr, portChatPublisher, p
 		msg, err := chatColl.RecvMessage()
 		if err != nil {
 			log.Printf("[ERROR] Failed to receive message: %v\n", err)
-			break
+			continue
 		}
 		fmt.Printf("p2p-relay:<==> %s\n", msg[0])
-		if err := chatPub.SendFrame([]byte(fmt.Sprintf("RELAY:%s", msg[0])), 0); err != nil {
-			log.Fatalf("[ERROR] Failed to send message: %v\n", err)
+		for {
+			if err := chatPub.SendFrame([]byte(fmt.Sprintf("RELAY:%s", msg[0])), 0); err != nil {
+				log.Printf("[ERROR] Failed to send message: %v\n", err)
+			} else {
+				break
+			}
 		}
 	}
 }
@@ -141,7 +149,7 @@ func createSocket(sockType int, addr string, port string) *goczmq.Sock {
 
 func main() {
 	if len(os.Args) == 1 {
-		fmt.Println("usage is 'go run p2p-dechat.go _user-name_'.")
+		fmt.Println("usage is 'go run lec-05-prg-12-p2p-dechat.go _user-name_'.")
 		return
 	} else {
 		fmt.Println("starting p2p chatting program")
