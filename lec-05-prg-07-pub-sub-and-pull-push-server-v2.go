@@ -22,7 +22,7 @@ func main() {
 	for {
 		msg, err := collector.RecvMessage()
 		if err != nil {
-			log.Printf("[ERROR] Failed to recieve message from client: %v\n", err)
+			continue
 		}
 		fmt.Printf("server: publishing update => %s\n", msg[0])
 		if err := publisher.SendFrame(msg[0], 0); err != nil {

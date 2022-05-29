@@ -30,6 +30,7 @@ func main() {
 		msg, err := sock.RecvMessage()
 		if err != nil {
 			log.Printf("[ERROR] Failed to read message from server: %v\n", err)
+			i--
 			continue
 		}
 		res := strings.Split(string(msg[0]), " ")

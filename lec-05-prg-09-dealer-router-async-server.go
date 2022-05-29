@@ -24,9 +24,7 @@ func genWorker(wg *sync.WaitGroup, id int) {
 		}
 		fmt.Printf("Worker#%d received '%s' from 'client#%s'\n", id, string(msg[1]), msg[2])
 		for {
-			if err := worker.SendMessage(msg); err != nil {
-				log.Printf("[ERROR] Failed to send message: %v\n", err)
-			} else {
+			if err := worker.SendMessage(msg); err == nil {
 				break
 			}
 		}

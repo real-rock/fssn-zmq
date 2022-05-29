@@ -193,7 +193,6 @@ func main() {
 
 	clientSock := createSocket(goczmq.Req, ipAddrP2pServer, portSubscribe)
 	defer clientSock.Destroy()
-	log.Printf("Hello")
 
 	msg := fmt.Sprintf("%s:%s", ipAddr, userName)
 	for {

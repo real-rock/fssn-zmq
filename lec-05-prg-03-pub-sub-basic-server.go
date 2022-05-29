@@ -27,8 +27,10 @@ func main() {
 		relhumidity := getRandRange(10, 60)
 
 		msg := fmt.Sprintf("%d %d %d", zipcode, temperature, relhumidity)
-		if err := sock.SendFrame([]byte(msg), 0); err != nil {
-			log.Printf("[ERROR] Failed to publish '%s': %v", msg, err)
+		for {
+			if err := sock.SendFrame([]byte(msg), 0); err == nil {
+				break
+			}
 		}
 	}
 }

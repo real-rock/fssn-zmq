@@ -42,7 +42,7 @@ func main() {
 			msgStr := fmt.Sprintf("request #%d", reqs)
 			for {
 				if err := sock.SendMessage([][]byte{[]byte(msgStr), []byte(sock.Identity())}); err != nil {
-					log.Printf("[ERROR] Failed to send message: %v\n", err)
+					//log.Printf("[ERROR] Failed to send message: %v\n", err)
 					continue
 				} else {
 					break
@@ -52,7 +52,8 @@ func main() {
 			if poll.Wait(1000) == sock {
 				msg, err := sock.RecvMessage()
 				if err != nil {
-					log.Printf("[ERROR] Failed to recieve message: %v\n", err)
+					continue
+					//log.Printf("[ERROR] Failed to receive message: %v\n", err)
 				} else {
 					fmt.Printf("%s received: %s\n", identity, msg[0])
 				}
